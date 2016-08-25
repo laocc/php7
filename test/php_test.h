@@ -24,7 +24,7 @@
 extern zend_module_entry test_module_entry;
 #define phpext_test_ptr &test_module_entry
 
-#define PHP_TEST_VERSION "0.1.0" /* Replace with version number for your extension */
+#define PHP_TEST_VERSION "1.1.0" /* Replace with version number for your extension */
 
 #ifdef PHP_WIN32
 #	define PHP_TEST_API __declspec(dllexport)
@@ -37,6 +37,16 @@ extern zend_module_entry test_module_entry;
 #ifdef ZTS
 #include "TSRM.h"
 #endif
+
+PHP_FUNCTION(str_test);
+
+PHP_MINIT_FUNCTION(test);
+PHP_MSHUTDOWN_FUNCTION(test);
+#ifndef ZTS
+PHP_RINIT_FUNCTION(test);
+#endif
+PHP_MINFO_FUNCTION(test);
+
 
 /*
   	Declare any global variables you may need between the BEGIN
@@ -59,6 +69,8 @@ ZEND_TSRMLS_CACHE_EXTERN()
 #endif
 
 #endif	/* PHP_TEST_H */
+
+
 
 
 /*

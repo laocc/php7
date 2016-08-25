@@ -24,22 +24,25 @@ PHP_INI_END()
 */
 /* }}} */
 
-
 PHP_FUNCTION(str_test)
 {
 	char *arg = NULL;
 	size_t arg_len, len;
 	zend_string *strg;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &arg, &arg_len) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &arg, &arg_len) == FAILURE) {
 		return;
 	}
 
-	strg = strpprintf(0, "Hello %.78s", arg);
+	strg = strpprintf(0, "Hello %.78s\n", arg);
 
 	RETURN_STR(strg);
 }
 /* }}} */
+
+PHP_METHOD(test,has) {
+	RETURN_STR("abc");
+}
 
 
 /* {{{ php_test_init_globals
@@ -102,6 +105,8 @@ PHP_MINFO_FUNCTION(test)
 {
 	php_info_print_table_start();
 	php_info_print_table_header(2, "test support", "enabled");
+    php_info_print_table_row(2, "Version", PHP_TEST_VERSION);
+    php_info_print_table_row(2, "Author", "Fazo(fazo@qq.com)");
 	php_info_print_table_end();
 
 	/* Remove comments if you have entries in php.ini
@@ -112,12 +117,18 @@ PHP_MINFO_FUNCTION(test)
 
 /* {{{ test_functions[]
  *
- * Every user visible function must have an entry in test_functions[].
+ * 本扩展所实现的所有函数
  */
 const zend_function_entry test_functions[] = {
-	PHP_FE(str_test,	NULL)		/* For testing, remove later. */
-	PHP_FE_END	/* Must be the last line in test_functions[] */
+	PHP_FE(str_test,	NULL)
+	PHP_FE_END
 };
+
+const zend_function_entry vtest_functions[] = {
+	PHP_FE(test, has,NULL)
+	PHP_FE_END
+};
+
 /* }}} */
 
 /* {{{ test_module_entry
@@ -135,6 +146,8 @@ zend_module_entry test_module_entry = {
 	STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
+
+
 
 #ifdef COMPILE_DL_TEST
 #ifdef ZTS
