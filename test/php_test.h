@@ -40,13 +40,8 @@ extern zend_module_entry test_module_entry;
 
 PHP_FUNCTION(str_test);
 
-PHP_MINIT_FUNCTION(test);
-PHP_MSHUTDOWN_FUNCTION(test);
-#ifndef ZTS
-PHP_RINIT_FUNCTION(test);
-#endif
-PHP_MINFO_FUNCTION(test);
-
+PHP_METHOD(test, __construct);
+PHP_METHOD(test, createApp);
 
 /*
   	Declare any global variables you may need between the BEGIN

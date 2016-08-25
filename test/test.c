@@ -40,9 +40,34 @@ PHP_FUNCTION(str_test)
 }
 /* }}} */
 
-PHP_METHOD(test,has) {
-	RETURN_STR("abc");
+zend_class_entry *cz_cz_ce;
+
+const zend_function_entry cz_class_functions[]={
+    PHP_ME(test, __construct,NULL,ZEND_ACC_PUBLIC|ZEND_ACC_CTOR)
+    PHP_ME(test,createApp,NULL,ZEND_ACC_PUBLIC)
+    PHP_FE_END
+};
+PHP_MINIT_FUNCTION(cz)
+{
+    zend_class_entry ce;
+    memset(&ce, 0, sizeof(zend_class_entry));
+    INIT_CLASS_ENTRY(ce,"test",cz_class_functions);
+    cz_cz_ce = zend_register_internal_class_ex(&ce,NULL,NULL TSRMLS_CC);
+    /*
+    cz_cz_ce->ce_flags |= ZEND_ACC_IMPLICIT_ABSTRACT_CLASS;
+     * */
+    zend_declare_property_null(cz_cz_ce,ZEND_STRL("_test"),ZEND_ACC_PUBLIC TSRMLS_CC);
 }
+PHP_METHOD(test,__construct)
+{
+    zend_printf("The is Cz class __construct!!</br>");
+}
+PHP_METHOD(test,createApp)
+{
+    zend_printf("The is Cz lcass createApp !</br>");
+}
+
+
 
 
 /* {{{ php_test_init_globals
